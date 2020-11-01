@@ -3,9 +3,11 @@ const express = require('express');
 const bodyParse = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path')
+const helmet = require('helmet');
 
 const userRoute = require('./route/user');
 const stuffRoute = require('./route/stuff');
+const { ppid } = require('process');
 
 const app = express();
 
@@ -21,6 +23,8 @@ mongoose.connect('mongodb+srv://tutiboss:Quentin40600@cluster0.ejdjv.mongodb.net
   useUnifiedTopology: true })
 .then(() => console.log('Connexion à MongoDB réussie !'))
 .catch(() => console.log('Connexion à MongoDB échouée !'));
+
+app.use(helmet());
 
 app.use(bodyParse.json());
 

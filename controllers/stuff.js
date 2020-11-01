@@ -10,7 +10,7 @@ exports.creatSauce = (req, res) => {
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
     Stuff.save()
-        .then(() => res.status(201).json({message: 'utilisateyr créé'}))
+        .then(() => res.status(201).json({message: 'sauce ajouter'}))
         .catch(error => res.status(400).json({error}));
 }
 

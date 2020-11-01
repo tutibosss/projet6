@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypte = require('bcrypt');
 const token = require('jsonwebtoken');
+const crypt = require('../middelware/masqueEmail')
 
 exports.signup = (req, res) => {
     const email = /^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$/;
@@ -11,22 +12,26 @@ exports.signup = (req, res) => {
 
     bcrypte.hash(req.body.password, 10)
     .then(hash => {
-        const user = new User({
-            email: req.body.email,
-            password: hash
-        });
-        user.save()
-            .then(() => res.status(201).json({message: 'utilisateyr créé'}))
-            .catch(error => res.status(400).json({error}))
+                const Email = crypt(req.body.email)
+                const user = new User({
+                    email: Email,
+                    password: hash
+                });
+                user.save()
+                    .then(() => res.status(201).json({message: 'utilisateyr créé'}))
+                    .catch(error => res.status(400).json({error}))
         })
-        .catch(error => res.status(500).json({error}));
+    .catch(error => res.status(500).json({error}));
 }
 
-exports.login = (req, res) => {
+exports.login = async (req, res) => {
     if(!req.body.password || !req.body.email){
         res.status(500).json({message: "manque le mot de passe ou l'email"});
     }
-    User.findOne({email: req.body.email})
+
+    const Email = crypt(req.body.email);
+
+        User.findOne({email: Email})
         .then(user => {
             if(!user){
                 return res.status(401).json({error: 'utilisateur inexistant'});
