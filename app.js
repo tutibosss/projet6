@@ -2,7 +2,7 @@ require('dotenv').config({path: './middelware/.env'})
 const express = require('express');
 const bodyParse = require('body-parser');
 const mongoose = require('mongoose');
-const path = require('path')
+const path = require('path');
 const helmet = require('helmet');
 
 const userRoute = require('./route/user');
