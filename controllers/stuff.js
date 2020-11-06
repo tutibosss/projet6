@@ -1,14 +1,6 @@
 const stuff = require('../models/stuff');
 const fs = require('fs');
 
-const verifEdit = async (idUser, objetId) => {
-    const objet = await stuff.findOne({_id: objetId});
-    if(idUser != objet.userId){
-        return true
-    }
-    return false
-}
-
 exports.creatSauce = (req, res) => {
     const sauce = JSON.parse(req.body.sauce);
     const Stuff = new stuff({
@@ -48,10 +40,6 @@ exports.deleteSauce = (req, res) =>{
 }
 
 exports.modifSauce = async (req, res) => {
-        const Validation = await verifEdit(req.body.userId, req.params.id);
-        if(Validation){
-            return res.status(401).json({message: "vous navais pas l'autorisation"})
-        }
         const update = req.file ?
           {
             ...JSON.parse(req.body.sauce),
